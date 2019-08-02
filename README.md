@@ -13,6 +13,8 @@ WhY dId YoU mAkE tHiS?
 
 Feel free to use it in your own GroupMe chats:
 
+Note: This is built with [Flask](https://flask.palletsprojects.com/en/1.1.x/)
+
 - First, create a GroupMe bot on the [GroupMe developers portal](https://dev.groupme.com)
 - Next, copy the bot ID into the BOT_ID field of main.py 
 - Finally, host your script and set the bot's callback to point to <your_site>/bot_msg 
