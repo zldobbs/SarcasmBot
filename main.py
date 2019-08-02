@@ -1,16 +1,26 @@
-import json
+from flask import Flask, request
 import requests
-from bottle import route, run, template 
+app = Flask(__name__)
 
-config = json.load(open('config.json', 'r'))
+# Should be imported from a config file to be secure.. but this is just quick, dirty fun
+BOT_ID = "###"
+BOT_NAME = "."
 
-# print(config['bot_id'])
+def send_bot_msg(msg):
+    fun_msg = "".join(c.upper() if i % 2 == 0 else c.lower() for i, c in enumerate(msg))
+    print('Sending: ' + fun_msg)
+    requests.post('https://api.groupme.com/v3/bots/post', data = {"text": fun_msg, "bot_id": BOT_ID})
+    return
 
-# requests.post('https://api.groupme.com/v3/bots/post', data = { 
-#     "text": "fucking shit tyler I don't know man I'm so sad", 
-#     "bot_id": config['bot_id']
-# })
+@app.route('/')
+def hello_world():
+    return 'You are doing great sweetie'
 
-@route('/bot_message') 
-def handle_message():
-    print request
+@app.route('/bot_msg', methods=['POST'])
+def handle_bot_msg():
+    data = request.get_json()
+    print(data)
+    if (data['name'] != BOT_NAME) and (data['text'][0] == '#'):
+        print(data['text'])
+        send_bot_msg(data['text'][1:])
+    return 'Someone sent a message'
